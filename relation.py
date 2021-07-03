@@ -9,7 +9,6 @@ Session = sessionmaker(bind=engine)
 session = Session()
 Base = declarative_base()
 
-
 class School(Base):
     __tablename__ = "school"
     id = Column(Integer,primary_key=True)

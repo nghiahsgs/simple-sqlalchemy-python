@@ -5,8 +5,8 @@ from sqlalchemy.sql.expression import or_
 
 # Connect to postgres database. 
 # pip install psycopg2-binary
-engine = create_engine('postgresql://postgres:261997@45.77.173.77/test_db',echo=False)
-# engine = create_engine('mysql+pymysql://root:261997@localhost/test2')
+# engine = create_engine('postgresql://postgres:261997@45.77.173.77/test_db',echo=False)
+engine = create_engine('mysql+pymysql://root:@localhost/test2')
 
 # Bind session with the enginee. What database should it intereact is defined in bind parameter.
 Session = sessionmaker(bind=engine)
@@ -31,15 +31,17 @@ class Student(Base):
 # But to which connection/enginee should it reflect is refered passing enginee.
 Base.metadata.create_all(engine)
 
-
 # Step 1: add new record to table
 '''
-student1 = Student(name="nghiahsgs8",age=20,grade="1A")
-student2 = Student(name="nghiahsgs9",age=20,grade="1A")
+student1 = Student(name="nghiahsgs8",age=19,grade="1A")
+student2 = Student(name="nghiahsgs8",age=20,grade="1A")
 student3 = Student(name="nghiahsgs10",age=20,grade="1A")
 
-# session.add(student1)
-session.add_all([student1,student2,student3])
+# if one student add fail => all roll back => have transactions
+session.add(student1)
+session.add(student2)
+session.add(student3)
+# session.add_all([student1,student2,student3])
 session.commit()
 '''
 
@@ -92,6 +94,7 @@ finally:
 '''
 
 # Step 4: delete record
+'''
 student = session.query(Student).filter(Student.id ==1).first()
 session.delete(student)
 try:
@@ -102,3 +105,4 @@ except Exception as e:
 finally:
     session.close()
     pass
+'''
